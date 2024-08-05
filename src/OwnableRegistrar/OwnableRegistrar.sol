@@ -84,17 +84,7 @@ contract OwnableRegistrar is Ownable {
         address resolver_,
         uint64 ttl_
     ) public onlyOwner {
-        bytes32 label = keccak256(abi.encodePacked(name));
-
-        IENS(ensRegistry).setSubnodeRecord(
-            nameHash,
-            label,
-            owner_,
-            resolver_,
-            ttl_
-        );
-
-        emit SubnameRegistered(name, label, owner_, resolver_, ttl_);
+        _registerName(name, owner_, resolver_, ttl_);
     }
 
     /// @notice Register multiple subnames under the parent name.
@@ -121,7 +111,31 @@ contract OwnableRegistrar is Ownable {
         }
 
         for (uint256 i = 0; i < names.length; i++) {
-            registerName(names[i], owners[i], resolvers[i], ttls[i]);
+            _registerName(names[i], owners[i], resolvers[i], ttls[i]);
         }
+    }
+
+    /// @notice Register a subname under the parent name.
+    /// @param name The label of the subname to be registered.
+    /// @param owner_ The address to set as the owner of the subname.
+    /// @param resolver_ The address of the resolver for the subname.
+    /// @param ttl_ The time-to-live (TTL) value for the subname.
+    function _registerName(
+        string memory name,
+        address owner_,
+        address resolver_,
+        uint64 ttl_
+    ) internal {
+        bytes32 label = keccak256(abi.encodePacked(name));
+
+        IENS(ensRegistry).setSubnodeRecord(
+            nameHash,
+            label,
+            owner_,
+            resolver_,
+            ttl_
+        );
+
+        emit SubnameRegistered(name, label, owner_, resolver_, ttl_);
     }
 }
