@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {Test} from "forge-std/Test.sol";
 import {ENSRegistry} from "ens-contracts/contracts/registry/ENSRegistry.sol";
-import {OwnableRegistrar} from "../src/OwnableRegistrar/OwnableRegistrar.sol";
+import {OwnableRegistrar} from "../../src/OwnableRegistrar/OwnableRegistrar.sol";
 
 contract OwnableRegistrarTest is Test {
     ENSRegistry public ensRegistry;
